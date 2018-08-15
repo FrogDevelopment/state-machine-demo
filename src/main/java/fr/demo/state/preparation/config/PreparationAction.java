@@ -17,7 +17,7 @@ import fr.demo.state.order.data.OrderStatePersist;
 
 import java.util.List;
 
-class PreparationAction implements Action<PreparationState, PreparationEvent> {
+public class PreparationAction implements Action<PreparationState, PreparationEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreparationAction.class);
 
@@ -29,7 +29,7 @@ class PreparationAction implements Action<PreparationState, PreparationEvent> {
     @Autowired
     private OrderStatePersist orderStatePersist;
 
-    PreparationAction(OrderEvent orderEvent) {
+    public PreparationAction(OrderEvent orderEvent) {
         this.orderEvent = orderEvent;
     }
 
