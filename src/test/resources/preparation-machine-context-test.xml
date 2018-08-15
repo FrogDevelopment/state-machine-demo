@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="fr.demo.state.preparation">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+        <context:exclude-filter type="regex" expression="fr.demo.state.preparation.data.PreparationStatePersist"/>
+        <context:exclude-filter type="regex" expression="fr.demo.state.preparation.config.PreparationAction"/>
+    </context:component-scan>
+
+    <!-- MOCK DAO -->
+    <bean id="preparationDao" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.preparation.data.PreparationDao"/>
+    </bean>
+
+    <!-- DEFINITION ACTION FOR PREPARATION -->
+    <bean id="preparationActionInit" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.preparation.config.PreparationAction"/>
+    </bean>
+
+    <bean id="preparationActionDelete" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.preparation.config.PreparationAction"/>
+    </bean>
+
+    <bean id="preparationActionStart" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.preparation.config.PreparationAction"/>
+    </bean>
+
+    <!-- STATE MACHINE MONITORS-->
+    <bean id="stateMachineMonitor" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.monitor.DemoStateMachineMonitor"/>
+    </bean>
+
+</beans>
