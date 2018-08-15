@@ -37,10 +37,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StateClientTest {
+public class StateApiTest {
 
     @InjectMocks
-    private StateClient stateClient;
+    private StateApi stateApi;
 
     @Mock
     private PreparationStatePersist preparationStatePersist;
@@ -76,7 +76,7 @@ public class StateClientTest {
     @Before
     public void init() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(stateClient)
+                .standaloneSetup(stateApi)
                 .setMessageConverters(mappingJackson2HttpMessageConverter)
                 .build();
     }

@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/notify")
 @Api(value = "notify", description = "Operations to notify event to change entity state")
-public class StateClient {
+public class StateApi {
 
     private final PreparationStatePersist preparationStatePersist;
 
     private final OrderStatePersist orderStatePersist;
 
     @Autowired
-    public StateClient(PreparationStatePersist preparationStatePersist, OrderStatePersist orderStatePersist) {
+    public StateApi(PreparationStatePersist preparationStatePersist, OrderStatePersist orderStatePersist) {
         this.preparationStatePersist = preparationStatePersist;
         this.orderStatePersist = orderStatePersist;
     }
