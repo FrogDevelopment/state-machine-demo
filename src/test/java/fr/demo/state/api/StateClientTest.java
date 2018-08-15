@@ -1,4 +1,4 @@
-package fr.demo.state;
+package fr.demo.state.api;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

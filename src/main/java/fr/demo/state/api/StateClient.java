@@ -1,4 +1,4 @@
-package fr.demo.state;
+package fr.demo.state.api;
 
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
