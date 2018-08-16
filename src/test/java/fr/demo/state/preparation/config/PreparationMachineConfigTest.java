@@ -3,6 +3,7 @@ package fr.demo.state.preparation.config;
 import fr.demo.state.common.What;
 import fr.demo.state.preparation.PreparationEvent;
 import fr.demo.state.preparation.PreparationState;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.statemachine.test.StateMachineTestPlanBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@Ignore("machine à redéfinir")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:preparation-machine-context-test.xml"})
 @WithMockUser

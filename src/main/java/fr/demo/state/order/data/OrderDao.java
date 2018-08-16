@@ -1,11 +1,9 @@
 package fr.demo.state.order.data;
 
-import fr.demo.state.order.Flow;
-
 import java.util.List;
 import java.util.Map;
 
-public interface OrderDao{
+public interface OrderDao {
 
     Map<String, Object> get(String code);
 
@@ -13,5 +11,5 @@ public interface OrderDao{
 
     void create(Map<String, String> order);
 
-    Flow getOrderFlow(String orderCode);
+    String getOrderType(String code);
 }

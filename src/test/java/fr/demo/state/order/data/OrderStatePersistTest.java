@@ -2,6 +2,7 @@ package fr.demo.state.order.data;
 
 import fr.demo.state.order.OrderState;
 import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRED)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml"})
+@ContextConfiguration(locations = {"classpath:application-data-test.xml"})
 public class OrderStatePersistTest {
 
     @Autowired
@@ -22,12 +23,13 @@ public class OrderStatePersistTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Before
+    public void before() {
+        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE, UPDATE_DATETIME) VALUES ('ORDER_X', 'INITIAL', getDate())");
+    }
+
     @Test
     public void test_getState() {
-        jdbcTemplate.update("INSERT INTO [ORDER_PROVIDER]" +
-                " ([ORDER_PROVIDER_CODE], [PROVIDER_ID], [WAREHOUSE_CODE], [STATUS], [FLOW])" +
-                " VALUES ('ORDER_X', 1, 100, 'INITIAL', 'JIT')");
-
         OrderState state = orderStatePersist.getState("ORDER_X");
 
         Assertions.assertThat(state).isEqualTo(OrderState.INITIAL);
@@ -35,10 +37,6 @@ public class OrderStatePersistTest {
 
     @Test
     public void test_updateState() {
-        jdbcTemplate.update("INSERT INTO [ORDER_PROVIDER]" +
-                " ([ORDER_PROVIDER_CODE], [PROVIDER_ID], [WAREHOUSE_CODE], [STATUS], [FLOW])" +
-                " VALUES ('ORDER_X', 1, 100, 'INITIAL', 'JIT')");
-
         orderStatePersist.updateState("ORDER_X", OrderState.AWAITING_PREPARATION);
 
         OrderState state = orderStatePersist.getState("ORDER_X");

@@ -1,6 +1,5 @@
 package fr.demo.state.order.data;
 
-import fr.demo.state.order.Flow;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,31 +10,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRED)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml"})
+@ContextConfiguration(locations = {"classpath:application-data-test.xml"})
 public class OrderDaoTest {
 
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    public void setDataSource(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
 
     @Test
     public void test_getOrderFlow() {
-        jdbcTemplate.update("INSERT INTO [ORDER_PROVIDER]" +
-                " ([ORDER_PROVIDER_CODE], [PROVIDER_ID], [WAREHOUSE_CODE], [STATUS], [FLOW])" +
-                " VALUES ('ORDER_X', 1, 100, 'INITIAL', 'JIT')");
+        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE, UPDATE_DATETIME, ORDER_TYPE) VALUES ('ORDER_X', 'INITIAL', getDate(), 'TEST')");
 
-        Flow flow = orderDao.getOrderFlow("ORDER_X");
+        String type = orderDao.getOrderType("ORDER_X");
 
-        Assertions.assertThat(flow).isEqualTo(Flow.JIT);
+        Assertions.assertThat(type).isEqualTo("TEST");
     }
 
 }

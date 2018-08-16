@@ -1,6 +1,5 @@
 package fr.demo.state.order.data;
 
-import fr.demo.state.order.Flow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,11 +38,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Flow getOrderFlow(String orderCode) {
-        String sql = "SELECT opv.flow FROM DEMO_ORDER WHERE code = :orderCode";
+    public String getOrderType(String code) {
+        String sql = "SELECT ORDER_TYPE FROM DEMO_ORDER WHERE CODE = :code";
 
-        MapSqlParameterSource parameters = new MapSqlParameterSource("orderCode", orderCode);
+        MapSqlParameterSource parameters = new MapSqlParameterSource("code", code);
 
-        return jdbcTemplate.queryForObject(sql, parameters, (rs, i) -> Flow.valueOf(rs.getString("flow")));
+        return jdbcTemplate.queryForObject(sql, parameters, String.class);
     }
 }

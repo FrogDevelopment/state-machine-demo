@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional(propagation = Propagation.REQUIRED)
-@ContextConfiguration(locations = {"classpath:application-context-test.xml"})
+@ContextConfiguration(locations = {"classpath:application-data-test.xml"})
 public class AbstractStatePersistTest {
 
     @Autowired

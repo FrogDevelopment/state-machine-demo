@@ -1,5 +1,7 @@
 package fr.demo.state.order.data;
 
+import fr.demo.state.common.AbstractStatePersist;
+import fr.demo.state.common.What;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.stereotype.Component;
-
-import fr.demo.state.common.AbstractStatePersist;
-import fr.demo.state.common.What;
 
 @Component
 public class OrderStatePersist extends AbstractStatePersist<OrderState, OrderEvent> {
@@ -30,7 +29,7 @@ public class OrderStatePersist extends AbstractStatePersist<OrderState, OrderEve
 
     @Override
     protected void updateState(String key, OrderState state) {
-        String sql = "UPDATE DEMO_ORDER SET STATE =:state WHERE CODE = :code";
+        String sql = "UPDATE DEMO_ORDER SET STATE =:state, UPDATE_DATETIME = getDate() WHERE CODE = :code";
         MapSqlParameterSource parameters = new MapSqlParameterSource();
 
         parameters.addValue("code", key);

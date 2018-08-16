@@ -10,12 +10,16 @@
     <context:component-scan base-package="fr.demo.state.preparation">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
         <context:exclude-filter type="regex" expression="fr.demo.state.preparation.data.PreparationStatePersist"/>
-        <context:exclude-filter type="regex" expression="fr.demo.state.preparation.config.PreparationAction"/>
     </context:component-scan>
 
     <!-- MOCK DAO -->
     <bean id="preparationDao" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg name="classToMock" value="fr.demo.state.preparation.data.PreparationDao"/>
+    </bean>
+
+    <!-- MOCK STATE PERSISTS -->
+    <bean id="orderStatePersist" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg name="classToMock" value="fr.demo.state.order.data.OrderStatePersist"/>
     </bean>
 
     <!-- DEFINITION ACTION FOR PREPARATION -->

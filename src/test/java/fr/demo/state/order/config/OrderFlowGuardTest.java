@@ -1,7 +1,6 @@
 package fr.demo.state.order.config;
 
 import fr.demo.state.common.AbstractStatePersist;
-import fr.demo.state.order.Flow;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.data.OrderDao;
@@ -21,10 +20,10 @@ import org.springframework.statemachine.support.DefaultStateContext;
 @RunWith(MockitoJUnitRunner.class)
 public class OrderFlowGuardTest {
 
+    private static final String CODE = "code";
 
-    public static final String CODE = "code";
     @InjectMocks
-    private OrderFlowGuard orderFlowGuard = new OrderFlowGuard(Flow.JIT);
+    private OrderFlowGuard orderFlowGuard = new OrderFlowGuard("JIT");
 
     @Mock
     private OrderDao orderDao;
@@ -63,13 +62,13 @@ public class OrderFlowGuardTest {
 
         Mockito.doReturn(CODE).when(headers).get(AbstractStatePersist.HN_CODE, String.class);
 
-        Mockito.doReturn(Flow.JIT).when(orderDao).getOrderFlow(CODE);
+        Mockito.doReturn("JIT").when(orderDao).getOrderType(CODE);
 
         // CALL
         boolean toDispatch = orderFlowGuard.evaluate(stateContext);
 
         // ASSERTIONS
-        Mockito.verify(orderDao, Mockito.times(1)).getOrderFlow(CODE);
+        Mockito.verify(orderDao, Mockito.times(1)).getOrderType(CODE);
         Assertions.assertThat(toDispatch).isTrue();
     }
 
@@ -80,13 +79,13 @@ public class OrderFlowGuardTest {
 
         Mockito.doReturn(CODE).when(headers).get(AbstractStatePersist.HN_CODE, String.class);
 
-        Mockito.doReturn(Flow.TO_STOCK).when(orderDao).getOrderFlow(CODE);
+        Mockito.doReturn("TO_STOCK").when(orderDao).getOrderType(CODE);
 
         // CALL
         boolean toDispatch = orderFlowGuard.evaluate(stateContext);
 
         // ASSERTIONS
-        Mockito.verify(orderDao, Mockito.times(1)).getOrderFlow(CODE);
+        Mockito.verify(orderDao, Mockito.times(1)).getOrderType(CODE);
         Assertions.assertThat(toDispatch).isFalse();
     }
 }
