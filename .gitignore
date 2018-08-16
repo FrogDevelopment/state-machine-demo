@@ -1,10 +1,6 @@
 ### Fichiers de compilation
-*/target/
+target/
 
 ## Fichiers IDE
-*.ipr
-*.iws
-*.iml
-*.ids
 .idea/
 
