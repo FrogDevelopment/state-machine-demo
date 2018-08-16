@@ -1,5 +1,7 @@
 package fr.demo.state.common.test;
 
+import fr.demo.state.common.AbstractStatePersist;
+import fr.demo.state.common.What;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -8,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.demo.state.common.AbstractStatePersist;
-import fr.demo.state.common.What;
-
 @Repository
+@SuppressWarnings("deprecation")
 @Transactional(propagation = Propagation.MANDATORY)
 public class TestStatePersist extends AbstractStatePersist<TestState, TestEvent> {
 

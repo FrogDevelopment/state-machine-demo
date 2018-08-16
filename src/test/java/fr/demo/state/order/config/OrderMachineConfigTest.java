@@ -1,10 +1,8 @@
 package fr.demo.state.order.config;
 
 import fr.demo.state.common.What;
-
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
-import fr.demo.state.order.config.OrderFlowGuard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
