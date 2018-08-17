@@ -110,12 +110,17 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             if (headers.containsKey(HN_CODE)) {
                 String code = headers.get(HN_CODE, String.class);
 
-                S previousState = transition.getSource().getId();
-                S newState = state.getId(); // ne pas utiliser transition.getTarget().getId(), sinon Choice ne fonctionne plus !!!!
+                updateState(code, state.getId());
+            }
+        }
 
-                updateState(code, newState);
+        @Override
+        public void postStateChange(State<S, E> state, Message<E> message, Transition<S, E> transition, StateMachine<S, E> stateMachine) {
+            MessageHeaders headers = message.getHeaders();
+            if (headers.containsKey(HN_CODE)) {
+                String code = headers.get(HN_CODE, String.class);
 
-                LOGGER.info("state change with params: what={}, code={}, stateFrom={}, stateTo={}", what, code, previousState, newState);
+                LOGGER.info("Entity state changed: what={}, code={}, stateFrom={}, stateTo={}", what, code, transition.getSource().getId(),  transition.getTarget().getId());
             }
         }
     };
