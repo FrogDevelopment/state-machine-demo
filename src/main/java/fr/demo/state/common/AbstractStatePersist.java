@@ -20,9 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEvent> extends DefaultLifecycleProcessor {
 
@@ -60,7 +57,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             throw new IllegalArgumentException("Unknown code [" + code + "] for entity '" + what.name() + "'");
         }
 
-        // CREATE STATE MACHINE FOR ENTTTY
+        // CREATE STATE MACHINE FROM ENTITY
         StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(what.name());
 
         StateMachineAccess<S, E> stateMachineAccess = stateMachine.getStateMachineAccessor().withRegion();
@@ -105,7 +102,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
     // https://github.com/spring-projects/spring-statemachine/tree/master/spring-statemachine-samples/persist/src/main/java/demo/persist
     // http://blog.mimacom.com/introducing-spring-state-machine/
 
-    private final StateMachineInterceptorAdapter<S, E> interceptor = new StateMachineInterceptorAdapter<S, E>() {
+    private final StateMachineInterceptorAdapter<S, E> interceptor = new StateMachineInterceptorAdapter<>() {
 
         @Override
         public void preStateChange(State<S, E> state, Message<E> message, Transition<S, E> transition, StateMachine<S, E> stateMachine) {
@@ -118,13 +115,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
 
                 updateState(code, newState);
 
-                Map<String, Object> params = new HashMap<>();
-                params.put("what", what);
-                params.put("code", code);
-                params.put("stateFrom", previousState);
-                params.put("stateTo", newState);
-
-                LOGGER.info("state change with params={}", params);
+                LOGGER.info("state change with params: what={}, code={}, stateFrom={}, stateTo={}", what, code, previousState, newState);
             }
         }
     };

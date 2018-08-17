@@ -15,7 +15,7 @@ import java.util.Map;
 @Transactional(propagation = Propagation.MANDATORY, readOnly = true)
 public class OrderDaoImpl implements OrderDao {
 
-    protected final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
     public OrderDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -37,12 +37,4 @@ public class OrderDaoImpl implements OrderDao {
         return jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
     }
 
-    @Override
-    public String getOrderType(String code) {
-        String sql = "SELECT ORDER_TYPE FROM DEMO_ORDER WHERE CODE = :code";
-
-        MapSqlParameterSource parameters = new MapSqlParameterSource("code", code);
-
-        return jdbcTemplate.queryForObject(sql, parameters, String.class);
-    }
 }

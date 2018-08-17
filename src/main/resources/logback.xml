@@ -10,6 +10,7 @@
     </appender>
     <!-- A GARDER, pour debugger statemachine -->
     <!--<logger name="org.springframework.statemachine" level="INFO" />-->
+    <logger name="fr.demo.state.monitor.DemoStateMachineMonitor" level="DEBUG" />
 
     <!-- Niveau des logs -->
     <root level="INFO">

@@ -11,5 +11,4 @@ public interface OrderDao {
 
     void create(Map<String, String> order);
 
-    String getOrderType(String code);
 }
