@@ -8,7 +8,7 @@ pipeline {
                         maven : 'Default'
                 ) {
                     // Run the maven build
-                    sh "mvn clean package"
+                    sh "mvn clean package -e"
                 }
             }
         }
