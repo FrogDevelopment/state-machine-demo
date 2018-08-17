@@ -30,7 +30,6 @@
         <maven.compiler.target>10</maven.compiler.target>
 
         <!-- spring -->
-        <spring.security.version>5.0.7.RELEASE</spring.security.version>
         <spring.statemachine.version>2.0.2.RELEASE</spring.statemachine.version>
 
         <!-- commons -->
@@ -45,13 +44,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- spring -->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-test</artifactId>
-                <version>${spring.security.version}</version>
-                <scope>test</scope>
-            </dependency>
 
 			<!-- spring-statemachine -->
             <dependency>
@@ -111,11 +103,6 @@
     <dependencies>
 
         <!-- SPRING -->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.springframework.statemachine</groupId>
             <artifactId>spring-statemachine-core</artifactId>
@@ -192,12 +179,6 @@
         <dependency>
             <groupId>org.springframework.statemachine</groupId>
             <artifactId>spring-statemachine-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
 

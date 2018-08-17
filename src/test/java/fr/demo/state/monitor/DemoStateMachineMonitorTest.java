@@ -71,7 +71,7 @@ public class DemoStateMachineMonitorTest {
 
         // mock
         Mockito.doReturn(new EnumState<OrderState, OrderEvent>(OrderState.INITIAL)).when(transition).getSource();
-        Mockito.doReturn(new EnumState<OrderState, OrderEvent>(OrderState.TO_RECEIVE)).when(transition).getTarget();
+        Mockito.doReturn(new EnumState<OrderState, OrderEvent>(OrderState.DRAFT)).when(transition).getTarget();
         Mockito.doReturn(What.ORDER.name()).when(stateMachine).getId();
 
         // assert => nothing

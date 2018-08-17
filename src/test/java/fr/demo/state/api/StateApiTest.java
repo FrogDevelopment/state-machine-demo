@@ -10,9 +10,6 @@ import fr.demo.state.common.What;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.data.OrderStatePersist;
-import fr.demo.state.preparation.PreparationEvent;
-import fr.demo.state.preparation.PreparationState;
-import fr.demo.state.preparation.data.PreparationStatePersist;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +38,6 @@ public class StateApiTest {
 
     @InjectMocks
     private StateApi stateApi;
-
-    @Mock
-    private PreparationStatePersist preparationStatePersist;
 
     @Mock
     private OrderStatePersist orderStatePersist;
@@ -127,23 +121,13 @@ public class StateApiTest {
     }
 
     // ************************ \\
-    //       PREPARATION        \\
-    // ************************ \\
-
-    @Test
-    public void test_changePreparationState() throws Exception {
-        // call & assert
-        assert_changeState(What.PREPARATION, PreparationEvent.CLOSE, PreparationState.CLOSED, preparationStatePersist);
-    }
-
-    // ************************ \\
     //           ORDER          \\
     // ************************ \\
 
     @Test
     public void test_changeOrderState() throws Exception {
         // call & assert
-        assert_changeState(What.ORDER, OrderEvent.RECEIVE, OrderState.RECEIVED, orderStatePersist);
+        assert_changeState(What.ORDER, OrderEvent.RECEIPT, OrderState.RECEIVED, orderStatePersist);
     }
 
 }

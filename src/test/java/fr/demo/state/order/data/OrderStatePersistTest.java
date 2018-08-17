@@ -37,11 +37,11 @@ public class OrderStatePersistTest {
 
     @Test
     public void test_updateState() {
-        orderStatePersist.updateState("ORDER_X", OrderState.AWAITING_PREPARATION);
+        orderStatePersist.updateState("ORDER_X", OrderState.DRAFT);
 
         OrderState state = orderStatePersist.getState("ORDER_X");
 
-        Assertions.assertThat(state).isEqualTo(OrderState.AWAITING_PREPARATION);
+        Assertions.assertThat(state).isEqualTo(OrderState.DRAFT);
     }
 
 }

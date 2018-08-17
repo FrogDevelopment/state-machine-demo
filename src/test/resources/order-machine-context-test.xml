@@ -17,19 +17,6 @@
         <constructor-arg name="classToMock" value="fr.demo.state.order.data.OrderDao"/>
     </bean>
 
-    <!-- DEFINITION GUARD FOR ORDER -->
-    <bean id="fromStockFlowGuard" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg name="classToMock" value="fr.demo.state.order.config.OrderFlowGuard"/>
-    </bean>
-
-    <bean id="jitFlowGuard" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg name="classToMock" value="fr.demo.state.order.config.OrderFlowGuard"/>
-    </bean>
-
-    <bean id="toStockFlowGuard" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg name="classToMock" value="fr.demo.state.order.config.OrderFlowGuard"/>
-    </bean>
-
     <!-- STATE MACHINE MONITORS-->
     <bean id="stateMachineMonitor" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg name="classToMock" value="fr.demo.state.monitor.DemoStateMachineMonitor"/>
