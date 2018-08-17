@@ -23,7 +23,7 @@ public class OrderDaoTest {
 
     @Test
     public void test_getOrderFlow() {
-        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE, UPDATE_DATETIME, ORDER_TYPE) VALUES ('ORDER_X', 'INITIAL', getDate(), 'TEST')");
+        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE, UPDATE_DATETIME) VALUES ('ORDER_X', 'INITIAL', getDate())");
 
         String type = orderDao.getOrderType("ORDER_X");
 
