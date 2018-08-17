@@ -34,10 +34,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StateApiTest {
+public class NotifyApiTest {
 
     @InjectMocks
-    private StateApi stateApi;
+    private NotifyApi notifyApi;
 
     @Mock
     private OrderStatePersist orderStatePersist;
@@ -70,7 +70,7 @@ public class StateApiTest {
     @Before
     public void init() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(stateApi)
+                .standaloneSetup(notifyApi)
                 .setMessageConverters(mappingJackson2HttpMessageConverter)
                 .build();
     }
