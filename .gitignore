@@ -4,3 +4,4 @@ target/
 ## Fichiers IDE
 .idea/
 
+*.iml
