@@ -58,14 +58,14 @@ public class OrderBean {
         LOGGER.info("State changed for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
-    @OnStateEntry(source = "INITIAL", target = "DRAFT")
+    @OnStateEntry(target = "DRAFT")
     public void logOnStateEntry(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("state Entry for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("state DRAFT entry for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
-    @OnStateExit(source = "INITIAL", target = "DRAFT")
+    @OnStateExit(source = "INITIAL")
     public void logOnStateExit(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("State exit for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("State INITIAL exit for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
     @OrderOnEventNotAccepted(event = OrderEvent.CREATE)
