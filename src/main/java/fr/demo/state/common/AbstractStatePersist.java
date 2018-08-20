@@ -42,11 +42,12 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public S change(String code, E event) {
-        LOGGER.debug("call change state : code={}, event={}", code, event);
+        LOGGER.debug("Call change state : code={}, event={}", code, event);
 
         S currentState;
         try {
             currentState = getState(code);
+            LOGGER.debug("Current state for code={} : state={}", code, currentState);
         } catch (EmptyResultDataAccessException e) {
             LOGGER.error("No data for request", e);
             throw new IllegalArgumentException("Unknown code [" + code + "] for entity '" + what.name() + "'");
@@ -59,10 +60,11 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
         Message<E> message = MessageBuilder.withPayload(event)
                 .setHeader(HN_CODE, code)
                 .build();
+        LOGGER.debug("Sending event {}", message);
         boolean accepted = stateMachine.sendEvent(message);
 
         // STOPPING
-        LOGGER.debug("Stopping machine for {}", what);
+        LOGGER.trace("Stopping machine for {}", what);
         stateMachine.stop();
 
         if (accepted) {
@@ -78,11 +80,11 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
         StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(what.name());
 
         // stopping
-        LOGGER.debug("Stopping machine for {}", what);
+        LOGGER.trace("Stopping machine for {}", what);
         stateMachine.stop();
 
         // acquiring state machine
-        LOGGER.debug("Acquiring machine for {}", what);
+        LOGGER.trace("Acquiring machine for {}", what);
         stateMachine.getStateMachineAccessor().doWithAllRegions(function -> {
             // add interceptor
             function.addStateMachineInterceptor(interceptor);
@@ -92,7 +94,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
         });
 
         // starting
-        LOGGER.debug("Starting machine for {}", what);
+        LOGGER.trace("Starting machine for {}", what);
         stateMachine.start();
 
         return stateMachine;

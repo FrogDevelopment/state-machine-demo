@@ -55,21 +55,21 @@ public class OrderBean {
 
     @OrderOnStateChanged(source = OrderState.INITIAL, target = OrderState.DRAFT)
     public void logOnStateChanged(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("Order [{}] initialized", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("State changed for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
     @OnStateEntry(source = "INITIAL", target = "DRAFT")
     public void logOnStateEntry(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("Order [{}] initialisation entry", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("state Entry for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
     @OnStateExit(source = "INITIAL", target = "DRAFT")
     public void logOnStateExit(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("Order [{}] initialisation exit", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("State exit for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 
     @OrderOnEventNotAccepted(event = OrderEvent.CREATE)
     public void logOnEventNotAccepted(@EventHeaders Map<String, Object> headers) {
-        LOGGER.info("Order [{}] state change refuse", headers.get(AbstractStatePersist.HN_CODE));
+        LOGGER.info("State change refused for Order [{}]", headers.get(AbstractStatePersist.HN_CODE));
     }
 }

@@ -12,7 +12,7 @@
     <!--<logger name="org.springframework.statemachine" level="INFO" />-->
     <logger name="org.springframework.statemachine.support" level="WARN" />
 
-    <logger name="fr.demo.state.monitor.DemoStateMachineMonitor" level="DEBUG" />
+    <logger name="fr.demo.state" level="DEBUG" />
 
     <!-- Niveau des logs -->
     <root level="INFO">

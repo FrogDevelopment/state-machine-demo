@@ -5,6 +5,5 @@ public enum What {
      * @deprecated for test use only
      **/
     TEST,
-    PREPARATION,
     ORDER
 }
