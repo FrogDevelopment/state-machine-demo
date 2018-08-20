@@ -3,25 +3,20 @@ package fr.demo.state.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultLifecycleProcessor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.access.StateMachineAccess;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.state.State;
-import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.statemachine.support.StateMachineInterceptorAdapter;
 import org.springframework.statemachine.transition.Transition;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
-public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEvent> extends DefaultLifecycleProcessor {
+public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEvent> /*extends DefaultLifecycleProcessor*/ {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractStatePersist.class);
 
@@ -46,7 +41,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
      * @return the new {@link DemoState} if event was accepted
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    synchronized public S change(String code, E event) {
+    public S change(String code, E event) {
         LOGGER.debug("call change state : code={}, event={}", code, event);
 
         S currentState;
@@ -57,19 +52,8 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             throw new IllegalArgumentException("Unknown code [" + code + "] for entity '" + what.name() + "'");
         }
 
-        // CREATE STATE MACHINE FROM ENTITY
-        StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(what.name());
-
-        StateMachineAccess<S, E> stateMachineAccess = stateMachine.getStateMachineAccessor().withRegion();
-        // ADD INTERCEPTOR
-        stateMachineAccess.addStateMachineInterceptor(interceptor);
-        // RESETING IN CURRENT STATE
-        LOGGER.debug("Reseting machine for {} with state {}", what, currentState);
-        stateMachineAccess.resetStateMachine(new DefaultStateMachineContext<>(currentState, null, null, null, null, what.name()));
-
-        // STARTING
-        LOGGER.debug("Starting machine for {}", what);
-        stateMachine.start();
+        // GET STATE MACHINE FOR ENTITY
+        StateMachine<S, E> stateMachine = acquireStateMachine(currentState);
 
         // SENDING EVENT
         Message<E> message = MessageBuilder.withPayload(event)
@@ -88,6 +72,30 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             LOGGER.error("Change of state refused: what={}, code={}, event={}, current state={}", what, code, event, currentState);
             throw new StateException(what, code, event, currentState);
         }
+    }
+
+    private StateMachine<S, E> acquireStateMachine(S currentState) {
+        StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(what.name());
+
+        // stopping
+        LOGGER.debug("Stopping machine for {}", what);
+        stateMachine.stop();
+
+        // acquiring state machine
+        LOGGER.debug("Acquiring machine for {}", what);
+        stateMachine.getStateMachineAccessor().doWithAllRegions(function -> {
+            // add interceptor
+            function.addStateMachineInterceptor(interceptor);
+
+            // reset the state machine in current entity state
+            function.resetStateMachine(new DemoStateMachineContext<>(currentState, what));
+        });
+
+        // starting
+        LOGGER.debug("Starting machine for {}", what);
+        stateMachine.start();
+
+        return stateMachine;
     }
 
     protected abstract S getState(String key);
@@ -120,7 +128,7 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             if (headers.containsKey(HN_CODE)) {
                 String code = headers.get(HN_CODE, String.class);
 
-                LOGGER.info("Entity state changed: what={}, code={}, stateFrom={}, stateTo={}", what, code, transition.getSource().getId(),  transition.getTarget().getId());
+                LOGGER.info("Entity state changed: what={}, code={}, stateFrom={}, stateTo={}", what, code, transition.getSource().getId(), transition.getTarget().getId());
             }
         }
     };
