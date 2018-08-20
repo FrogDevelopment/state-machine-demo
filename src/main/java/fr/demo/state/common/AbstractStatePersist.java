@@ -16,14 +16,14 @@ import org.springframework.statemachine.transition.Transition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEvent> /*extends DefaultLifecycleProcessor*/ {
+public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractStatePersist.class);
 
     public static final String HN_CODE = "code";
 
     private StateMachineFactory<S, E> stateMachineFactory;
-    protected What what;
+    private What what;
 
     @Autowired
     protected NamedParameterJdbcTemplate jdbcTemplate;
