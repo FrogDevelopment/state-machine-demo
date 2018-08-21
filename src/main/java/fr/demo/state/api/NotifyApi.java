@@ -1,7 +1,6 @@
 package fr.demo.state.api;
 
 import fr.demo.state.order.OrderEvent;
-import fr.demo.state.order.OrderState;
 import fr.demo.state.order.data.OrderStatePersist;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,15 +25,15 @@ public class NotifyApi {
     }
 
     @PutMapping(value = "/order", produces = "application/json")
-    @ApiOperation(value = "Change state of an Order", response = OrderState.class)
+    @ApiOperation(value = "Change state of an Order")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully change Order state"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    public OrderState changeOrderState(@RequestParam("code") String code,
-                                       @RequestParam("event") OrderEvent event) {
-        return orderStatePersist.change(code, event);
+    public void notifyOrder(@RequestParam("code") String code,
+                            @RequestParam("event") OrderEvent event) {
+        orderStatePersist.change(code, event);
     }
 }

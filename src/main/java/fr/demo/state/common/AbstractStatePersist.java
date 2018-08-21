@@ -38,10 +38,10 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
     /**
      * @param code  code of the entity to change state
      * @param event event to send
-     * @return the new {@link DemoState} if event was accepted
+     * @throws StateException if the change of state is refused
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public S change(String code, E event) {
+    public void change(String code, E event) throws StateException {
         LOGGER.debug("Call change state : code={}, event={}", code, event);
 
         S currentState;
@@ -67,24 +67,33 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
         LOGGER.trace("Stopping machine for {}", what);
         stateMachine.stop();
 
-        if (accepted) {
-            // return the new state saved on base
-            return getState(code);
-        } else {
+        if (!accepted) {
             LOGGER.error("Change of state refused: what={}, code={}, event={}, current state={}", what, code, event, currentState);
             throw new StateException(what, code, event, currentState);
         }
     }
 
+    /**
+     * @param code  code of the entity to change state
+     * @param event event to send
+     * @return the new {@link DemoState} if event was accepted
+     * @throws StateException if the change of state is refused
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public S changeAndGetNewState(String code, E event) throws StateException {
+
+        change(code, event);
+
+        return getState(code);
+    }
+
     private StateMachine<S, E> acquireStateMachine(S currentState) {
         StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(what.name());
 
-        // stopping
         LOGGER.trace("Stopping machine for {}", what);
         stateMachine.stop();
 
-        // acquiring state machine
-        LOGGER.trace("Acquiring machine for {}", what);
+        LOGGER.trace("Resetting machine for {}", what);
         stateMachine.getStateMachineAccessor().doWithAllRegions(function -> {
             // add interceptor
             function.addStateMachineInterceptor(interceptor);
@@ -93,24 +102,17 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             function.resetStateMachine(new DemoStateMachineContext<>(currentState, what));
         });
 
-        // starting
         LOGGER.trace("Starting machine for {}", what);
         stateMachine.start();
 
         return stateMachine;
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     protected abstract S getState(String key);
 
+    @Transactional(propagation = Propagation.MANDATORY)
     protected abstract void updateState(String key, S state);
-
-    // ****************************************** \\
-    //      PERSIST ENUM STATE MACHINE HANDLER    \\
-    // ****************************************** \\
-
-    // http://docs.spring.io/spring-statemachine/docs/current/reference/htmlsingle/#statemachine-examples-persist
-    // https://github.com/spring-projects/spring-statemachine/tree/master/spring-statemachine-samples/persist/src/main/java/demo/persist
-    // http://blog.mimacom.com/introducing-spring-state-machine/
 
     private final StateMachineInterceptorAdapter<S, E> interceptor = new StateMachineInterceptorAdapter<>() {
 

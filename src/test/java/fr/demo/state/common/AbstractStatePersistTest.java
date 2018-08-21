@@ -75,7 +75,7 @@ public class AbstractStatePersistTest {
 
         // CALL
         // call change of state
-        TestState newState = statePersist.change("CODE_1", TestEvent.START);
+        TestState newState = statePersist.changeAndGetNewState("CODE_1", TestEvent.START);
 
         // check state returned
         assertThat(newState).isEqualTo(TestState.IN_PROGRESS);
