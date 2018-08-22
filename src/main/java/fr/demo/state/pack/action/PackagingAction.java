@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PackagingAction implements Action<PackState, PackEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PackagingAction.class);
