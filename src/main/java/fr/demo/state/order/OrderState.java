@@ -6,6 +6,7 @@ public enum OrderState implements DemoState {
     INITIAL,
 
     DRAFT,
+    WAITING_PAYMENT,
     PREPARING,
     DELIVERING,
     DONE,

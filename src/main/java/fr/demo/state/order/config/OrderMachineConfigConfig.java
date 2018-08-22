@@ -3,6 +3,7 @@ package fr.demo.state.order.config;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.action.PreparingAction;
+import fr.demo.state.order.guard.PaymentGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.config.AbstractStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
@@ -16,6 +17,10 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
 
     @Autowired
     private PreparingAction preparingAction;
+
+    @Autowired
+    private PaymentGuard paymentGuard;
+
 
     @Override
     public void configure(StateMachineStateConfigurer<OrderState, OrderEvent> states) throws Exception {
@@ -44,8 +49,15 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .and()
                 .withExternal()
                 .source(OrderState.DRAFT)
-                .target(OrderState.PREPARING)
+                .target(OrderState.WAITING_PAYMENT)
                 .event(OrderEvent.VALIDATE)
+
+                .and()
+                .withExternal()
+                .source(OrderState.WAITING_PAYMENT)
+                .target(OrderState.PREPARING)
+                .event(OrderEvent.PAY)
+                .guard(paymentGuard)
                 .action(preparingAction) //  => an exception interrupt the transition
 
                 .and()
