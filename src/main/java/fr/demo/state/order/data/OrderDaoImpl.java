@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void create(Map<String, String> order) {
-        jdbcTemplate.update("INSERT into DEMO_ORDER (CODE, STATE, UPDATE_DATETIME) values (:code, :state, getDate())", order);
+        jdbcTemplate.update("INSERT into DEMO_ORDER (CODE, STATE, DESCRIPTION) values (:code, :state, :description)", order);
     }
 
     @Override
