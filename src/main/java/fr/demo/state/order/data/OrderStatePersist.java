@@ -29,7 +29,7 @@ public class OrderStatePersist extends AbstractStatePersist<OrderState, OrderEve
 
     @Override
     protected void updateState(String key, OrderState state) {
-        String sql = "UPDATE DEMO_ORDER SET STATE = :state, UPDATE_DATETIME = getDate() WHERE CODE = :code";
+        String sql = "UPDATE DEMO_ORDER SET STATE = :state WHERE CODE = :code";
         MapSqlParameterSource parameters = new MapSqlParameterSource();
 
         parameters.addValue("code", key);
