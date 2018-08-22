@@ -127,7 +127,7 @@ public class NotifyApiTest {
     @Test
     public void test_changeOrderState() throws Exception {
         // call & assert
-        assert_changeState(What.ORDER, OrderEvent.RECEIPT, OrderState.RECEIVED, orderStatePersist);
+        assert_changeState(What.ORDER, OrderEvent.RECEIPT, OrderState.DONE, orderStatePersist);
     }
 
 }

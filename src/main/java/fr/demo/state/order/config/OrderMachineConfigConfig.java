@@ -17,7 +17,7 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
         states.withStates()
                 .states(EnumSet.allOf(OrderState.class))
                 .initial(OrderState.INITIAL)
-                .end(OrderState.RECEIVED);
+                .end(OrderState.DONE);
     }
 
     @Override
@@ -46,12 +46,12 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .and()
                 .withExternal().
                 source(OrderState.DELIVERING).
-                target(OrderState.RECEIVED).
+                target(OrderState.DONE).
                 event(OrderEvent.RECEIPT)
                 .and()
                 .withExternal().
                 source(OrderState.DELIVERING).
-                target(OrderState.RECEIVED).
+                target(OrderState.DONE).
                 event(OrderEvent.RECEIPT)
         ;
     }

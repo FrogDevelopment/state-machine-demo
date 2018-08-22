@@ -42,7 +42,7 @@ public class OrderMachineConfigTest {
                         .and()
                         .step().
                         sendEvent(OrderEvent.RECEIPT).
-                        expectState(OrderState.RECEIVED)
+                        expectState(OrderState.DONE)
                         .and()
                         .build();
         plan.test();
