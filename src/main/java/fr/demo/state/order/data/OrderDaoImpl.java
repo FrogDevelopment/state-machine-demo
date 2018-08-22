@@ -37,4 +37,21 @@ public class OrderDaoImpl implements OrderDao {
         return jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
     }
 
+    @Override
+    public boolean hasOnlyNumericProduct(String orderCode) {
+        String sql = "SELECT" +
+                " case when count(dp.CODE) = sum(case when dp.IS_NUMERIC = true " +
+                "                                               then 1 " +
+                "                                               else 0 " +
+                "                                       end)" +
+                "       then 1" +
+                "       else 0" +
+                "      end" +
+                " FROM DEMO_PRODUCT dp" +
+                " INNER JOIN PRODUCT_ORDER po on po.PRODUCT_CODE = DP.CODE and po.ORDER_CODE = :orderCode";
+
+        MapSqlParameterSource paramSource = new MapSqlParameterSource("orderCode", orderCode);
+
+        return jdbcTemplate.queryForObject(sql, paramSource, Boolean.class);
+    }
 }

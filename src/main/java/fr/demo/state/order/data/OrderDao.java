@@ -11,4 +11,5 @@ public interface OrderDao {
 
     void create(Map<String, String> order);
 
+    boolean hasOnlyNumericProduct(String orderCode);
 }

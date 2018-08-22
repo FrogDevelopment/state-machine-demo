@@ -3,6 +3,7 @@ package fr.demo.state.order.config;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.action.PreparingAction;
+import fr.demo.state.order.guard.ChoiceGuard;
 import fr.demo.state.order.guard.PaymentGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.config.AbstractStateMachineConfigurerAdapter;
@@ -21,6 +22,8 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
     @Autowired
     private PaymentGuard paymentGuard;
 
+    @Autowired
+    private ChoiceGuard choiceGuard;
 
     @Override
     public void configure(StateMachineStateConfigurer<OrderState, OrderEvent> states) throws Exception {
@@ -28,6 +31,7 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .states(EnumSet.allOf(OrderState.class))
                 .initial(OrderState.INITIAL)
 //                .state(OrderState.PREPARING, preparingAction, null) // => an exception doesn't interrupt the transition
+                .choice(OrderState.CHOICE_PAYMENT)
                 .end(OrderState.DONE);
     }
 
@@ -55,10 +59,15 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .and()
                 .withExternal()
                 .source(OrderState.WAITING_PAYMENT)
-                .target(OrderState.PREPARING)
+                .target(OrderState.CHOICE_PAYMENT)
                 .event(OrderEvent.PAY)
                 .guard(paymentGuard)
-                .action(preparingAction) //  => an exception interrupt the transition
+
+                .and()
+                .withChoice()
+                .source(OrderState.CHOICE_PAYMENT)
+                .first(OrderState.DONE, choiceGuard)
+                .last(OrderState.PREPARING, preparingAction) //  => an exception interrupt the transition)
 
                 .and()
                 .withExternal()
