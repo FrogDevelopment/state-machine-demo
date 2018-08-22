@@ -2,6 +2,7 @@ package fr.demo.state.order.config;
 
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
+import fr.demo.state.order.action.DeliveringAction;
 import fr.demo.state.order.action.PreparingAction;
 import fr.demo.state.order.guard.ChoiceGuard;
 import fr.demo.state.order.guard.PaymentGuard;
@@ -18,6 +19,9 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
 
     @Autowired
     private PreparingAction preparingAction;
+
+    @Autowired
+    private DeliveringAction deliveringAction;
 
     @Autowired
     private PaymentGuard paymentGuard;
@@ -74,6 +78,7 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .source(OrderState.PREPARING)
                 .target(OrderState.DELIVERING)
                 .event(OrderEvent.SEND)
+                .action(deliveringAction)
 
                 .and()
                 .withExternal()
