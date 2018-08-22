@@ -2,6 +2,7 @@ package fr.demo.state.order.config;
 
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
+import fr.demo.state.order.action.DeliveringAction;
 import fr.demo.state.order.action.PreparingAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.config.AbstractStateMachineConfigurerAdapter;
@@ -16,6 +17,9 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
 
     @Autowired
     private PreparingAction preparingAction;
+
+    @Autowired
+    private DeliveringAction deliveringAction;
 
     @Override
     public void configure(StateMachineStateConfigurer<OrderState, OrderEvent> states) throws Exception {
@@ -53,6 +57,7 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .source(OrderState.PREPARING)
                 .target(OrderState.DELIVERING)
                 .event(OrderEvent.SEND)
+                .action(deliveringAction)
 
                 .and()
                 .withExternal()
