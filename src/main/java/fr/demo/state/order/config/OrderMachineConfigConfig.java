@@ -2,6 +2,8 @@ package fr.demo.state.order.config;
 
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
+import fr.demo.state.order.action.PreparingAction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.config.AbstractStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
@@ -12,11 +14,15 @@ import java.util.EnumSet;
 @EnableStateMachineFactory(name = "orderMachine")
 public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
 
+    @Autowired
+    private PreparingAction preparingAction;
+
     @Override
     public void configure(StateMachineStateConfigurer<OrderState, OrderEvent> states) throws Exception {
         states.withStates()
                 .states(EnumSet.allOf(OrderState.class))
                 .initial(OrderState.INITIAL)
+//                .state(OrderState.PREPARING, preparingAction, null) // => an exception doesn't interrupt the transition
                 .end(OrderState.DONE);
     }
 
@@ -25,34 +31,34 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
         transitions
                 // INITIAL
                 .withExternal().
-                source(OrderState.INITIAL).
-                target(OrderState.DRAFT).
-                event(OrderEvent.CREATE)
+                source(OrderState.INITIAL)
+                .target(OrderState.DRAFT)
+                .event(OrderEvent.CREATE)
+
                 .and()
-                .withExternal().
-                source(OrderState.DRAFT).
-                target(OrderState.CANCELED).
-                event(OrderEvent.CANCEL)
+                .withExternal()
+                .source(OrderState.DRAFT)
+                .target(OrderState.CANCELED)
+                .event(OrderEvent.CANCEL)
+
                 .and()
-                .withExternal().
-                source(OrderState.DRAFT).
-                target(OrderState.PREPARING).
-                event(OrderEvent.VALIDATE)
+                .withExternal()
+                .source(OrderState.DRAFT)
+                .target(OrderState.PREPARING)
+                .event(OrderEvent.VALIDATE)
+                .action(preparingAction) //  => an exception interrupt the transition
+
                 .and()
-                .withExternal().
-                source(OrderState.PREPARING).
-                target(OrderState.DELIVERING).
-                event(OrderEvent.SEND)
+                .withExternal()
+                .source(OrderState.PREPARING)
+                .target(OrderState.DELIVERING)
+                .event(OrderEvent.SEND)
+
                 .and()
-                .withExternal().
-                source(OrderState.DELIVERING).
-                target(OrderState.DONE).
-                event(OrderEvent.RECEIPT)
-                .and()
-                .withExternal().
-                source(OrderState.DELIVERING).
-                target(OrderState.DONE).
-                event(OrderEvent.RECEIPT)
+                .withExternal()
+                .source(OrderState.DELIVERING)
+                .target(OrderState.DONE)
+                .event(OrderEvent.RECEIPT)
         ;
     }
 }
