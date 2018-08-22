@@ -7,5 +7,6 @@ public enum OrderEvent implements DemoEvent {
     CREATE,
     VALIDATE,
     SEND,
-    RECEIPT
+    RECEIPT,
+    CANCEL
 }

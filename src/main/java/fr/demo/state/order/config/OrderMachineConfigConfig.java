@@ -31,6 +31,11 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .and()
                 .withExternal().
                 source(OrderState.DRAFT).
+                target(OrderState.CANCELED).
+                event(OrderEvent.CANCEL)
+                .and()
+                .withExternal().
+                source(OrderState.DRAFT).
                 target(OrderState.PREPARING).
                 event(OrderEvent.VALIDATE)
                 .and()
@@ -38,6 +43,11 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 source(OrderState.PREPARING).
                 target(OrderState.DELIVERING).
                 event(OrderEvent.SEND)
+                .and()
+                .withExternal().
+                source(OrderState.DELIVERING).
+                target(OrderState.RECEIVED).
+                event(OrderEvent.RECEIPT)
                 .and()
                 .withExternal().
                 source(OrderState.DELIVERING).

@@ -8,5 +8,6 @@ public enum OrderState implements DemoState {
     DRAFT,
     PREPARING,
     DELIVERING,
-    RECEIVED
+    RECEIVED,
+    CANCELED
 }

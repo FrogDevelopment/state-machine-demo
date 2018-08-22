@@ -48,4 +48,24 @@ public class OrderMachineConfigTest {
         plan.test();
     }
 
+    @Test
+    public void cancel() throws Exception {
+        StateMachineTestPlan<OrderState, OrderEvent> plan =
+                StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
+                        .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
+                        .step().
+                        expectState(OrderState.INITIAL)
+                        .and()
+                        .step().
+                        sendEvent(OrderEvent.CREATE).
+                        expectState(OrderState.DRAFT)
+                        .and()
+                        .step().
+                        sendEvent(OrderEvent.CANCEL).
+                        expectState(OrderState.CANCELED)
+                        .and()
+                        .build();
+        plan.test();
+    }
+
 }
