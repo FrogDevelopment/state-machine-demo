@@ -4,6 +4,7 @@ import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.action.DeliveringAction;
 import fr.demo.state.order.action.PreparingAction;
+import fr.demo.state.order.action.ToPrepareAction;
 import fr.demo.state.order.guard.ChoiceGuard;
 import fr.demo.state.order.guard.PaymentGuard;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.EnumSet;
 
 @EnableStateMachineFactory(name = "orderMachine")
 public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
+
+    @Autowired
+    private ToPrepareAction toPrepareAction;
 
     @Autowired
     private PreparingAction preparingAction;
@@ -34,7 +38,6 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
         states.withStates()
                 .states(EnumSet.allOf(OrderState.class))
                 .initial(OrderState.INITIAL)
-//                .state(OrderState.PREPARING, preparingAction, null) // => an exception doesn't interrupt the transition
                 .choice(OrderState.CHOICE_PAYMENT)
                 .end(OrderState.DONE);
     }
@@ -71,7 +74,14 @@ public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdap
                 .withChoice()
                 .source(OrderState.CHOICE_PAYMENT)
                 .first(OrderState.DONE, choiceGuard)
-                .last(OrderState.PREPARING, preparingAction) //  => an exception interrupt the transition)
+                .last(OrderState.TO_PREPARE, toPrepareAction)
+
+                .and()
+                .withExternal()
+                .source(OrderState.TO_PREPARE)
+                .target(OrderState.TO_PREPARE)
+                .event(OrderEvent.PREPARE)
+                .action(preparingAction)
 
                 .and()
                 .withExternal()
