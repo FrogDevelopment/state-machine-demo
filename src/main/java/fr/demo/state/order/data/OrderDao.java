@@ -8,4 +8,6 @@ public interface OrderDao {
     List<Map<String, Object>> getAll();
 
     boolean hasOnlyNumericProduct(String orderCode);
+
+    Map<String, Object> getOrder(String orderCode);
 }
