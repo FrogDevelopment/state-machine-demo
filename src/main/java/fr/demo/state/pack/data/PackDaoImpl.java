@@ -18,8 +18,12 @@ public class PackDaoImpl implements PackDao {
     }
 
     @Override
-    public void create(Map<String, String> pack) {
-        jdbcTemplate.update("INSERT into DEMO_PACK (CODE, STATE, ORDER_CODE) values (:code, :state, :order_code)", pack);
+    public String create(String orderCode) {
+        String packCode = "PACK_" + orderCode;
+
+        jdbcTemplate.update("INSERT into DEMO_PACK (CODE, STATE, ORDER_CODE) values (:code, 'INITIAL', :orderCode)", Map.of("code", packCode, "orderCode", orderCode));
+
+        return packCode;
     }
 
 }

@@ -24,7 +24,19 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Map<String, Object>> getAll() {
-        return jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
+        List<Map<String, Object>> orders = jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
+
+        orders.forEach(order -> {
+            Map<String, Object> params = Map.of("orderCode", order.get("CODE"));
+
+            List<Map<String, Object>> products = jdbcTemplate.queryForList("SELECT dp.* FROM DEMO_PRODUCT dp inner join PRODUCT_ORDER po on po.PRODUCT_CODE = dp.CODE and po.ORDER_CODE = :orderCode", params);
+            order.put("PRODUCTS", products);
+
+            List<Map<String, Object>> packs = jdbcTemplate.queryForList("SELECT * FROM DEMO_PACK where ORDER_CODE = :orderCode", params);
+            order.put("PACKS", packs);
+        });
+
+        return orders;
     }
 
     @Override
