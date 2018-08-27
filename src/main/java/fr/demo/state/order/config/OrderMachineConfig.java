@@ -79,7 +79,7 @@ public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<Or
                 .and()
                 .withExternal()
                 .source(OrderState.TO_PREPARE)
-                .target(OrderState.TO_PREPARE)
+                .target(OrderState.PREPARING)
                 .event(OrderEvent.PREPARE)
                 .action(preparingAction)
 
