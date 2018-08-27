@@ -9,6 +9,7 @@ import fr.demo.state.pack.data.PackStatePersist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class ToPrepareAction implements Action<OrderState, OrderEvent> {
     @Autowired
     private PackDao packDao;
 
+    @Lazy
     @Autowired
     private PackStatePersist packStatePersist;
 

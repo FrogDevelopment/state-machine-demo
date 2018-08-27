@@ -10,6 +10,6 @@ public class MessageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
     public void sendMail(String message) {
-        LOGGER.info("*************************************************{}************* Sending message : {}{}\"*************************************************", System.lineSeparator(), message, System.lineSeparator());
+        LOGGER.info("************* Sending message : \"{}\" *************", message);
     }
 }

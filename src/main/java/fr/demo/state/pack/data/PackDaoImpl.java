@@ -28,7 +28,7 @@ public class PackDaoImpl implements PackDao {
 
     @Override
     public String getOrderCode(String packCode) {
-        return jdbcTemplate.queryForObject("select ORDER_CODE from DEMO_PAC where code = :code", Map.of("code", packCode), String.class);
+        return jdbcTemplate.queryForObject("select ORDER_CODE from DEMO_PACK where code = :code", Map.of("code", packCode), String.class);
     }
 
 }

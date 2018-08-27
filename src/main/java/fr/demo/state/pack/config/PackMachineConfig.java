@@ -19,7 +19,7 @@ public class PackMachineConfig extends AbstractStateMachineConfigurerAdapter<Pac
     private PackAction packagingAction;
 
     @Autowired
-    private PackAction deliveringAction;
+    private PackAction deliveringPackAction;
 
     @Autowired
     private PackAction receivedAction;
@@ -36,10 +36,16 @@ public class PackMachineConfig extends AbstractStateMachineConfigurerAdapter<Pac
     public void configure(StateMachineTransitionConfigurer<PackState, PackEvent> transitions) throws Exception {
         transitions
                 // INITIAL
-                .withExternal().
-                source(PackState.INITIAL)
-                .target(PackState.PACKAGING)
+                .withExternal()
+                .source(PackState.INITIAL)
+                .target(PackState.TO_PACKAGE)
                 .event(PackEvent.CREATE)
+
+                .and()
+                .withExternal()
+                .source(PackState.TO_PACKAGE)
+                .target(PackState.PACKAGING)
+                .event(PackEvent.PROCESS)
                 .action(packagingAction)
 
                 .and()
@@ -47,7 +53,7 @@ public class PackMachineConfig extends AbstractStateMachineConfigurerAdapter<Pac
                 .source(PackState.PACKAGING)
                 .target(PackState.DELIVERING)
                 .event(PackEvent.SEND)
-                .action(deliveringAction)
+                .action(deliveringPackAction)
 
                 .and()
                 .withExternal()

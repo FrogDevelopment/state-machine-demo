@@ -13,9 +13,8 @@ public class PackConfig {
         return new PackAction(OrderEvent.PREPARE);
     }
 
-
     @Bean
-    public PackAction deliveringAction() {
+    public PackAction deliveringPackAction() {
         return new PackAction(OrderEvent.SEND);
     }
 
