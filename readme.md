@@ -16,8 +16,13 @@ Short description
 Simply put, a state machine allows to manage the **transition** between a **state** S<sub>n</sub> to an other **state** S<sub>n+1</sub>, or between the **states** from S<sub>n</sub> to S<sub>n-1</sub>, with the use of **events**\
 ![example_0](svg/example_0.svg)
 
-With a state machine you declare which states is expected depending oh the event used :
-![example_0](svg/example_1.svg)
+With a state machine you declare which states is expected depending oh the event used.\
+![example_0](svg/example_1.svg)\
+Here I have define this configuration :
+- if I'm the the state _S1_ and then I receive the event _E1_ then I'm changing to the state _S2_
+- then if I'm the the state _S2_ and then I receive the event _E2_ then I'm changing to the state _S3_
+- otherwise, all other events on different states are to be refused
+
 
 Then if we have this examples :
 * let an entity at the state _S1_, if we use the event _E1_ then the transition will be **accepted** and the entity will have his state **changed** to _S2_\
