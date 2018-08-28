@@ -4,6 +4,7 @@ import fr.demo.state.common.MessageService;
 import fr.demo.state.common.What;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
+import fr.demo.state.order.guard.ChoiceGuard;
 import fr.demo.state.order.guard.PaymentGuard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,9 @@ public class OrderMachineConfigTest {
 
     @MockBean
     private PaymentGuard paymentGuard;
+
+    @MockBean
+    private ChoiceGuard choiceGuard;
 
     @Test
     public void test_guard_false() throws Exception {
@@ -64,9 +68,10 @@ public class OrderMachineConfigTest {
     }
 
     @Test
-    public void test_guard_true() throws Exception {
+    public void test_guard_true_and_choice_false() throws Exception {
         // given
         Mockito.doReturn(true).when(paymentGuard).evaluate(Mockito.any());
+        Mockito.doReturn(false).when(choiceGuard).evaluate(Mockito.any());
 
         StateMachineTestPlan<OrderState, OrderEvent> plan =
                 StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
@@ -87,6 +92,11 @@ public class OrderMachineConfigTest {
                         .and()
                         .step()
                         .sendEvent(OrderEvent.PAY)
+                        .expectState(OrderState.TO_PREPARE)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.PREPARE)
                         .expectState(OrderState.PREPARING)
 
                         .and()
@@ -104,6 +114,40 @@ public class OrderMachineConfigTest {
         plan.test();
 
         Mockito.verify(messageService, Mockito.times(2)).sendMail(Mockito.anyString());
+    }
+
+    @Test
+    public void test_guard_true_and_choice_true() throws Exception {
+        // given
+        Mockito.doReturn(true).when(paymentGuard).evaluate(Mockito.any());
+        Mockito.doReturn(true).when(choiceGuard).evaluate(Mockito.any());
+
+        StateMachineTestPlan<OrderState, OrderEvent> plan =
+                StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
+                        .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
+                        .step()
+                        .expectState(OrderState.INITIAL)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.VALIDATE)
+                        .expectState(OrderState.WAITING_PAYMENT)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.PAY)
+                        .expectState(OrderState.DONE)
+
+                        .and()
+                        .build();
+        plan.test();
+
+        Mockito.verifyZeroInteractions(messageService);
     }
 
     @Test
