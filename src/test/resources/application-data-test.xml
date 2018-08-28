@@ -35,7 +35,7 @@
     <bean id="orderMachine" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg name="classToMock" value="org.springframework.statemachine.config.StateMachineFactory"/>
     </bean>
-    <bean id="preparationMachine" class="org.mockito.Mockito" factory-method="mock">
+    <bean id="packMachine" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg name="classToMock" value="org.springframework.statemachine.config.StateMachineFactory"/>
     </bean>
 
