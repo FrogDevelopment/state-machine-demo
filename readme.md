@@ -1,9 +1,8 @@
-Simple example
+Use cases used for the demonstration
 ==============
 
-Here is a very simple example of state-machine.
-
-Use of a very common use case : an amazon order => everyone know it \o/ \
+We will use a very simple model for the state-machine : an amazon order as everyone know it and can this way understand it\
  /!\ **it's a false workflow, create just for the demonstration** /!\
- 
- ![demo-state_0](https://drive.google.com/open?id=1TrdqKuJfNdssR444lHlHYeht72wLBSNz)
+
+1. [basic](https://github.com/FrogDevelopment/state-machine-demo/tree/0_simple_use_case)\
+![simple_use_case](svg/demo_state_0.svg)
