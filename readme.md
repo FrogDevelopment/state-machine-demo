@@ -44,7 +44,7 @@ We will use a very simple model for the state-machine : an amazon order as every
 1. [basic](https://github.com/FrogDevelopment/state-machine-demo/tree/0_simple_use_case)\
 ![simple_use_case](svg/demo_state_0.svg)
 
-2. [usning action](https://github.com/FrogDevelopment/state-machine-demo/tree/1_action_use_case)\
+2. [using action](https://github.com/FrogDevelopment/state-machine-demo/tree/1_action_use_case)\
 ![1_action_use_case](svg/demo_state_1.svg)
 
 3. [using guard](https://github.com/FrogDevelopment/state-machine-demo/tree/2_guard_use_case)\
