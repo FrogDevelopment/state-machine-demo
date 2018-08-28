@@ -4,10 +4,10 @@ import fr.demo.state.common.MessageService;
 import fr.demo.state.common.What;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
+import fr.demo.state.order.guard.PaymentGuard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -27,29 +27,78 @@ public class OrderMachineConfigTest {
     @SpyBean
     private MessageService messageService;
 
+    @MockBean
+    private PaymentGuard paymentGuard;
+
     @Test
-    public void test() throws Exception {
+    public void test_choice_false() throws Exception {
+        // given
+        Mockito.doReturn(false).when(paymentGuard).evaluate(Mockito.any());
+
         StateMachineTestPlan<OrderState, OrderEvent> plan =
                 StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
                         .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
-                        .step().
-                        expectState(OrderState.INITIAL)
+                        .step()
+                        .expectState(OrderState.INITIAL)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CREATE).
-                        expectState(OrderState.DRAFT)
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.VALIDATE).
-                        expectState(OrderState.PREPARING)
+                        .step()
+                        .sendEvent(OrderEvent.VALIDATE)
+                        .expectState(OrderState.WAITING_PAYMENT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.SEND).
-                        expectState(OrderState.DELIVERING)
+                        .step()
+                        .sendEvent(OrderEvent.PAY)
+                        .expectState(OrderState.WAITING_PAYMENT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.RECEIPT).
-                        expectState(OrderState.DONE)
+                        .build();
+        plan.test();
+
+        Mockito.verifyZeroInteractions(messageService);
+    }
+
+    @Test
+    public void test_choice_true() throws Exception {
+        // given
+        Mockito.doReturn(true).when(paymentGuard).evaluate(Mockito.any());
+
+        StateMachineTestPlan<OrderState, OrderEvent> plan =
+                StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
+                        .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
+                        .step()
+                        .expectState(OrderState.INITIAL)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.VALIDATE)
+                        .expectState(OrderState.WAITING_PAYMENT)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.PAY)
+                        .expectState(OrderState.PREPARING)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.SEND)
+                        .expectState(OrderState.DELIVERING)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.RECEIPT)
+                        .expectState(OrderState.DONE)
+
                         .and()
                         .build();
         plan.test();
@@ -62,16 +111,19 @@ public class OrderMachineConfigTest {
         StateMachineTestPlan<OrderState, OrderEvent> plan =
                 StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
                         .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
-                        .step().
-                        expectState(OrderState.INITIAL)
+                        .step()
+                        .expectState(OrderState.INITIAL)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CREATE).
-                        expectState(OrderState.DRAFT)
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CANCEL).
-                        expectState(OrderState.CANCELED)
+                        .step()
+                        .sendEvent(OrderEvent.CANCEL)
+                        .expectState(OrderState.CANCELED)
+
                         .and()
                         .build();
         plan.test();
