@@ -7,9 +7,7 @@ import fr.demo.state.order.OrderState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.test.StateMachineTestPlan;
@@ -28,28 +26,58 @@ public class OrderMachineConfigTest {
     private MessageService messageService;
 
     @Test
-    public void test() throws Exception {
+    public void test_1_mail() throws Exception {
         StateMachineTestPlan<OrderState, OrderEvent> plan =
                 StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
                         .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
                         .step().
                         expectState(OrderState.INITIAL)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CREATE).
-                        expectState(OrderState.DRAFT)
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.VALIDATE).
-                        expectState(OrderState.PREPARING)
+                        .step()
+                        .sendEvent(OrderEvent.VALIDATE)
+                        .expectState(OrderState.PREPARING)
+
                         .and()
+                        .build();
+        plan.test();
+
+        Mockito.verify(messageService, Mockito.times(1)).sendMail(Mockito.anyString());
+    }
+
+    @Test
+    public void test_2_mails() throws Exception {
+        StateMachineTestPlan<OrderState, OrderEvent> plan =
+                StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
+                        .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
                         .step().
-                        sendEvent(OrderEvent.SEND).
-                        expectState(OrderState.DELIVERING)
+                        expectState(OrderState.INITIAL)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.RECEIPT).
-                        expectState(OrderState.DONE)
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.VALIDATE)
+                        .expectState(OrderState.PREPARING)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.SEND)
+                        .expectState(OrderState.DELIVERING)
+
+                        .and()
+                        .step()
+                        .sendEvent(OrderEvent.RECEIPT)
+                        .expectState(OrderState.DONE)
+
                         .and()
                         .build();
         plan.test();
@@ -62,19 +90,24 @@ public class OrderMachineConfigTest {
         StateMachineTestPlan<OrderState, OrderEvent> plan =
                 StateMachineTestPlanBuilder.<OrderState, OrderEvent>builder()
                         .stateMachine(orderMachineFactory.getStateMachine(What.ORDER.name()))
-                        .step().
-                        expectState(OrderState.INITIAL)
+                        .step()
+                        .expectState(OrderState.INITIAL)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CREATE).
-                        expectState(OrderState.DRAFT)
+                        .step()
+                        .sendEvent(OrderEvent.CREATE)
+                        .expectState(OrderState.DRAFT)
+
                         .and()
-                        .step().
-                        sendEvent(OrderEvent.CANCEL).
-                        expectState(OrderState.CANCELED)
+                        .step()
+                        .sendEvent(OrderEvent.CANCEL)
+                        .expectState(OrderState.CANCELED)
+
                         .and()
                         .build();
         plan.test();
+
+        Mockito.verifyZeroInteractions(messageService);
     }
 
 }
