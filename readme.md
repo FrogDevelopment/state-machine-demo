@@ -13,7 +13,7 @@ Short description
 
 
 
-Simply put, a state machine allows to manage the **transition** between a **state** S<sub>n</sub> to an other **state** S<sub>n+1</sub>, or between the **states** from S<sub>n</sub> to S<sub>n-1</sub>, with the use of **events**. 
+Simply put, a state machine allows to manage the **transition** between a **state** S<sub>n</sub> to an other **state** S<sub>n+1</sub>, or between the **states** from S<sub>n</sub> to S<sub>n-1</sub>, with the use of **events**\ 
 ![example_0](svg/example_0.svg)
 
 With a state machine you declare which states is expected depending oh the event used :
