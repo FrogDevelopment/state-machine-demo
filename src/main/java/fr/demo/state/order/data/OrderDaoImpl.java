@@ -24,12 +24,18 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Map<String, Object>> getAll() {
-        return jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
+        List<Map<String, Object>> orders = jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
+
+        orders.forEach(this::fillOrder);
+
+        return orders;
     }
 
-    @Override
-    public Map<String, Object> getOrder(String code) {
-        return jdbcTemplate.queryForMap("SELECT * FROM DEMO_ORDER where CODE = :code", new MapSqlParameterSource("code", code));
+    private void fillOrder(Map<String, Object> order) {
+        Map<String, Object> params = Map.of("orderCode", order.get("CODE"));
+
+        List<Map<String, Object>> products = jdbcTemplate.queryForList("SELECT dp.* FROM DEMO_PRODUCT dp inner join PRODUCT_ORDER po on po.PRODUCT_CODE = dp.CODE and po.ORDER_CODE = :orderCode", params);
+        order.put("PRODUCTS", products);
     }
 
     @Override
@@ -48,5 +54,14 @@ public class OrderDaoImpl implements OrderDao {
         MapSqlParameterSource paramSource = new MapSqlParameterSource("orderCode", orderCode);
 
         return jdbcTemplate.queryForObject(sql, paramSource, Boolean.class);
+    }
+
+    @Override
+    public Map<String, Object> getOrder(String orderCode) {
+        Map<String, Object> order = jdbcTemplate.queryForMap("select * from DEMO_ORDER where CODE = :code", Map.of("code", orderCode));
+
+        fillOrder(order);
+
+        return order;
     }
 }
