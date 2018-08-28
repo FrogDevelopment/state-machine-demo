@@ -16,10 +16,10 @@ Short description
 Simply put, a state machine allows to manage the **transition** between a **state** S<sub>n</sub> to an other **state** S<sub>n+1</sub>, or between the **states** from S<sub>n</sub> to S<sub>n-1</sub>, with the use of **events**. 
 ![example_0](svg/example_0.svg)
 
-With a state machine declare which states is expected depending oh the event used :
+With a state machine you declare which states is expected depending oh the event used :
 ![example_0](svg/example_1.svg)
 
-Then if we have this use cases :
+Then if we have this examples :
 * let an entity at the state _S1_, if we use the event _E1_ then the transition will be **accepted** and the entity will have his state **changed** to _S2_\
 ![example_0](svg/example_2.svg)
 * let an entity at the state _S1_, if we use the event _E2_ then the transition will be **refused** and the entity will **stay** at its state _S1_\
@@ -30,25 +30,23 @@ Then if we have this use cases :
 ![example_0](svg/example_5.svg)
 
 
-Examples used
+Use cases used for the demonstration
 ==============
 
-Here is a very simple example of state-machine.
-
-Use of a very common use case : an amazon order => everyone know it \o/ \
+We will use a very simple model for the state-machine : an amazon order as everyone know it and can this way understand it\
  /!\ **it's a false workflow, create just for the demonstration** /!\
 
-1. [simple](https://github.com/FrogDevelopment/state-machine-demo/tree/0_simple_use_case)\
+1. [basic](https://github.com/FrogDevelopment/state-machine-demo/tree/0_simple_use_case)\
 ![simple_use_case](svg/demo_state_0.svg)
 
-2. [action](https://github.com/FrogDevelopment/state-machine-demo/tree/1_action_use_case)\
+2. [usning action](https://github.com/FrogDevelopment/state-machine-demo/tree/1_action_use_case)\
 ![1_action_use_case](svg/demo_state_1.svg)
 
-3. [guard](https://github.com/FrogDevelopment/state-machine-demo/tree/2_guard_use_case)\
+3. [using guard](https://github.com/FrogDevelopment/state-machine-demo/tree/2_guard_use_case)\
 ![2_guard_use_case](svg/demo_state_2.svg)
 
-4. [choice](https://github.com/FrogDevelopment/state-machine-demo/tree/3_choice_use_case)\
+4. [using choice](https://github.com/FrogDevelopment/state-machine-demo/tree/3_choice_use_case)\
 ![3_choice_use_case](svg/demo_state_3.svg)
 
-5. [interactions](https://github.com/FrogDevelopment/state-machine-demo/tree/4_interaction_use_case)\
+5. [having interactions](https://github.com/FrogDevelopment/state-machine-demo/tree/4_interaction_use_case)\
 ![4_interaction_use_case](svg/demo_state_4.svg)
