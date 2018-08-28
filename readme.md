@@ -19,13 +19,13 @@ Use of a very common use case : an amazon order => everyone know it \o/ \
 ![simple_use_case](svg/demo_state_0.svg)
 
 2. [action](https://github.com/FrogDevelopment/state-machine-demo/tree/1_action_use_case)\
-![1_action_use_case](https://github.com/FrogDevelopment/state-machine-demo/blob/master/svg/demo_state_1.svg)
+![1_action_use_case](svg/demo_state_1.svg)
 
 3. [guard](https://github.com/FrogDevelopment/state-machine-demo/tree/2_guard_use_case)\
-![2_guard_use_case](https://github.com/FrogDevelopment/state-machine-demo/blob/master/svg/demo_state_2.svg)
+![2_guard_use_case](svg/demo_state_2.svg)
 
 4. [choice](https://github.com/FrogDevelopment/state-machine-demo/tree/3_choice_use_case)\
-![3_choice_use_case](https://github.com/FrogDevelopment/state-machine-demo/blob/svg/demo_state_3.svg)
+![3_choice_use_case](svg/demo_state_3.svg)
 
 5. [interactions](https://github.com/FrogDevelopment/state-machine-demo/tree/4_interaction_use_case)\
-![4_interaction_use_case](https://github.com/FrogDevelopment/state-machine-demo/blob/svg/demo_state_4.svg)
+![4_interaction_use_case](svg/demo_state_4.svg)
