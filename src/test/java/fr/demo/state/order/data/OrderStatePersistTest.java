@@ -25,7 +25,7 @@ public class OrderStatePersistTest {
 
     @Before
     public void before() {
-        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE, UPDATE_DATETIME) VALUES ('ORDER_X', 'INITIAL', getDate())");
+        jdbcTemplate.update("INSERT INTO DEMO_ORDER (CODE, STATE) VALUES ('ORDER_X', 'INITIAL')");
     }
 
     @Test

@@ -1,11 +1,14 @@
 package fr.demo.state.order.config;
 
+import fr.demo.state.common.MessageService;
 import fr.demo.state.common.What;
 import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.test.StateMachineTestPlan;
 import org.springframework.statemachine.test.StateMachineTestPlanBuilder;
@@ -17,8 +20,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class OrderMachineConfigTest {
 
     @Autowired
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     private StateMachineFactory<OrderState, OrderEvent> orderMachineFactory;
+
+    @MockBean
+    private MessageService messageService;
 
     @Test
     public void test() throws Exception {
@@ -46,6 +51,8 @@ public class OrderMachineConfigTest {
                         .and()
                         .build();
         plan.test();
+
+        Mockito.verify(messageService, Mockito.times(2)).sendMail(Mockito.anyString());
     }
 
     @Test

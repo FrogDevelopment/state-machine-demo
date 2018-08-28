@@ -46,8 +46,8 @@ public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<Or
     public void configure(StateMachineTransitionConfigurer<OrderState, OrderEvent> transitions) throws Exception {
         transitions
                 // INITIAL
-                .withExternal().
-                source(OrderState.INITIAL)
+                .withExternal()
+                .source(OrderState.INITIAL)
                 .target(OrderState.DRAFT)
                 .event(OrderEvent.CREATE)
 
