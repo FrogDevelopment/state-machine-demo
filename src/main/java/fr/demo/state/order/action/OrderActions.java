@@ -19,8 +19,12 @@ public class OrderActions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderActions.class);
 
-    private String getCode(StateContext<OrderState, OrderEvent> context) {
-        return context.getMessageHeaders().get(AbstractStatePersist.HN_CODE, String.class);
+    private void logMessage(String message, StateContext<OrderState, OrderEvent> context) {
+        LOGGER.info("{} for Order '{}' from [{}] to [{}]",
+                message,
+                context.getMessageHeaders().get(AbstractStatePersist.HN_CODE, String.class),
+                context.getSource() != null ? context.getSource().getId() : "unknown",
+                context.getTarget() != null ? context.getTarget().getId() : "unknown");
     }
 
     @OnStateMachineError
@@ -30,36 +34,36 @@ public class OrderActions {
 
     @OrderOnTransition(source = OrderState.PREPARING, target = OrderState.DELIVERING)
     public void logOnTransition(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("Transition for Order '{}' from [{}] to [{}]", getCode(context), context.getSource().getId(), context.getTarget().getId());
+        logMessage("Transition", context);
     }
 
     @OnTransitionStart()
     public void logOnTransitionStart(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("Transition start for Order '{}' from [{}] to [{}]", getCode(context), context.getSource().getId(), context.getTarget().getId());
+        logMessage("Transition start", context);
     }
 
     @OnTransitionEnd()
     public void logOnTransitionEnd(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("Transition end for Order '{}' from [{}] to [{}]", getCode(context), context.getSource().getId(), context.getTarget().getId());
+        logMessage("Transition end", context);
     }
 
     @OrderOnStateChanged(source = OrderState.INITIAL, target = OrderState.DRAFT)
     public void logOnStateChanged(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("State changed for Order '{}' from [{}] to [{}]", getCode(context), context.getSource().getId(), context.getTarget().getId());
+        logMessage("State changed", context);
     }
 
     @OnStateExit()
     public void logOnStateExit(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("State exit for Order '{}' from [{}]", getCode(context), context.getSource().getId());
+        logMessage("State exit", context);
     }
 
     @OnStateEntry()
     public void logOnStateEntry(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("State entry for Order '{}' to [{}]", getCode(context), context.getTarget().getId());
+        logMessage("State entry", context);
     }
 
     @OrderOnEventNotAccepted()
     public void logOnEventNotAccepted(StateContext<OrderState, OrderEvent> context) {
-        LOGGER.info("State change refused for Order '{}' with event = ", context.getMessageHeaders().get(AbstractStatePersist.HN_CODE), context.getEvent());
+        logMessage("State change refused", context);
     }
 }
