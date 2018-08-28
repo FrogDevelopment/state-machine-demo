@@ -23,18 +23,13 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void create(Map<String, String> order) {
-        jdbcTemplate.update("INSERT into DEMO_ORDER (CODE, STATE, UPDATE_DATETIME) values (:code, :state, getDate())", order);
-    }
-
-    @Override
-    public Map<String, Object> get(String code) {
-        return jdbcTemplate.queryForMap("SELECT * FROM DEMO_ORDER where CODE = :code", new MapSqlParameterSource("code", code));
-    }
-
-    @Override
     public List<Map<String, Object>> getAll() {
         return jdbcTemplate.queryForList("SELECT * FROM DEMO_ORDER", new EmptySqlParameterSource());
+    }
+
+    @Override
+    public Map<String, Object> getOrder(String code) {
+        return jdbcTemplate.queryForMap("SELECT * FROM DEMO_ORDER where CODE = :code", new MapSqlParameterSource("code", code));
     }
 
 }
