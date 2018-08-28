@@ -127,6 +127,8 @@ public class OrderMachineConfigTest {
                         .and()
                         .build();
         plan.test();
+
+        Mockito.verifyZeroInteractions(messageService);
     }
 
 }
