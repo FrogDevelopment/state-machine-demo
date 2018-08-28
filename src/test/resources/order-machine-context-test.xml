@@ -16,4 +16,10 @@
     <bean id="orderDao" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg name="classToMock" value="fr.demo.state.order.data.OrderDao"/>
     </bean>
+
+
+    <!--&lt;!&ndash; MOCK DAO &ndash;&gt;-->
+    <!--<bean id="messageService" class="org.mockito.Mockito" factory-method="mock">-->
+        <!--<constructor-arg name="classToMock" value="fr.demo.state.common.MessageService"/>-->
+    <!--</bean>-->
 </beans>
