@@ -4,7 +4,6 @@ import fr.demo.state.order.OrderEvent;
 import fr.demo.state.order.OrderState;
 import fr.demo.state.order.action.DeliveringAction;
 import fr.demo.state.order.action.PreparingAction;
-import fr.demo.state.order.action.ToPrepareAction;
 import fr.demo.state.order.guard.ChoiceGuard;
 import fr.demo.state.order.guard.PaymentGuard;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,6 @@ import java.util.EnumSet;
 
 @EnableStateMachineFactory(name = "orderMachine")
 public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
-
-    @Autowired
-    private ToPrepareAction toPrepareAction;
 
     @Autowired
     private PreparingAction preparingAction;
@@ -74,7 +70,7 @@ public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<Or
                 .withChoice()
                 .source(OrderState.CHOICE_PAYMENT)
                 .first(OrderState.DONE, choiceGuard)
-                .last(OrderState.TO_PREPARE, toPrepareAction)
+                .last(OrderState.TO_PREPARE)
 
                 .and()
                 .withExternal()
