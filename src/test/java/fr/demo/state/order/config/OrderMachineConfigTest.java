@@ -7,8 +7,10 @@ import fr.demo.state.order.OrderState;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.test.StateMachineTestPlan;
 import org.springframework.statemachine.test.StateMachineTestPlanBuilder;
@@ -22,7 +24,7 @@ public class OrderMachineConfigTest {
     @Autowired
     private StateMachineFactory<OrderState, OrderEvent> orderMachineFactory;
 
-    @MockBean
+    @SpyBean
     private MessageService messageService;
 
     @Test
