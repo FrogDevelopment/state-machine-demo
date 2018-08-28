@@ -31,7 +31,7 @@ public class OrderMachineConfigTest {
     private PaymentGuard paymentGuard;
 
     @Test
-    public void test_choice_false() throws Exception {
+    public void test_guard_false() throws Exception {
         // given
         Mockito.doReturn(false).when(paymentGuard).evaluate(Mockito.any());
 
@@ -64,7 +64,7 @@ public class OrderMachineConfigTest {
     }
 
     @Test
-    public void test_choice_true() throws Exception {
+    public void test_guard_true() throws Exception {
         // given
         Mockito.doReturn(true).when(paymentGuard).evaluate(Mockito.any());
 
