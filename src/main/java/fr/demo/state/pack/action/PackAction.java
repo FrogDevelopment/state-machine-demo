@@ -24,10 +24,10 @@ public class PackAction implements Action<PackState, PackEvent> {
     @Autowired
     private OrderStatePersist orderStatePersist;
 
-    private final OrderEvent orderState;
+    private final OrderEvent orderEvent;
 
-    public PackAction(OrderEvent orderState) {
-        this.orderState = orderState;
+    public PackAction(OrderEvent orderEvent) {
+        this.orderEvent = orderEvent;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class PackAction implements Action<PackState, PackEvent> {
         String packCode = context.getMessageHeaders().get(AbstractStatePersist.HN_CODE, String.class);
 
         String orderCode = packDao.getOrderCode(packCode);
-        LOGGER.info("Notifying order '{}' event {{}} for pack '{}'", orderCode, orderState, packCode);
-        orderStatePersist.change(orderCode, orderState);
+        LOGGER.info("Notifying order '{}' event {{}} for pack '{}'", orderCode, orderEvent, packCode);
+        orderStatePersist.change(orderCode, orderEvent);
     }
 }
