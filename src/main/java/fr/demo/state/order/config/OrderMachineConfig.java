@@ -10,7 +10,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import java.util.EnumSet;
 
 @EnableStateMachineFactory(name = "orderMachine")
-public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
+public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
 
     @Override
     public void configure(StateMachineStateConfigurer<OrderState, OrderEvent> states) throws Exception {
