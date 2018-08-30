@@ -13,7 +13,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import java.util.EnumSet;
 
 @EnableStateMachineFactory(name = "orderMachine")
-public class OrderMachineConfigConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
+public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<OrderState, OrderEvent> {
 
     @Autowired
     private PreparingAction preparingAction;
