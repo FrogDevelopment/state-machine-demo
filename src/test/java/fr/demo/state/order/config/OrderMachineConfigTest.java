@@ -92,11 +92,6 @@ public class OrderMachineConfigTest {
                         .and()
                         .step()
                         .sendEvent(OrderEvent.PAY)
-                        .expectState(OrderState.TO_PREPARE)
-
-                        .and()
-                        .step()
-                        .sendEvent(OrderEvent.PREPARE)
                         .expectState(OrderState.PREPARING)
 
                         .and()

@@ -70,14 +70,7 @@ public class OrderMachineConfig extends AbstractStateMachineConfigurerAdapter<Or
                 .withChoice()
                 .source(OrderState.CHOICE_PAYMENT)
                 .first(OrderState.DONE, choiceGuard)
-                .last(OrderState.TO_PREPARE)
-
-                .and()
-                .withExternal()
-                .source(OrderState.TO_PREPARE)
-                .target(OrderState.PREPARING)
-                .event(OrderEvent.PREPARE)
-                .action(preparingAction)
+                .last(OrderState.PREPARING, preparingAction)
 
                 .and()
                 .withExternal()
