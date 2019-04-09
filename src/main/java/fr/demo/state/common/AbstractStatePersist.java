@@ -132,7 +132,8 @@ public abstract class AbstractStatePersist<S extends DemoState, E extends DemoEv
             if (headers.containsKey(HN_CODE)) {
                 String code = headers.get(HN_CODE, String.class);
 
-                LOGGER.info("Entity state changed: what={}, code={}, stateFrom={}, stateTo={}", what, code, transition.getSource().getId(), state.getId());
+                LOGGER.info("Entity state changed: what={}, code={}, stateFrom={}, stateTo={}", what, code,
+                        transition.getSource().getId(), transition.getTarget().getId());
             }
         }
     };
