@@ -34,7 +34,7 @@ public class DemoApi {
     }
 
     @GetMapping(value = "/order", produces = "application/json")
-    @ApiOperation(value = "Get all Orders", response = Map.class)
+    @ApiOperation(value = "Get an Order by it's code", response = Map.class)
     @Transactional(propagation = Propagation.REQUIRED)
     public Map<String, Object> getOrder(@RequestParam String orderCode) {
         return orderDao.getOrder(orderCode);
